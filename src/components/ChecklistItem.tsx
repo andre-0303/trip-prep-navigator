@@ -34,20 +34,27 @@ const ChecklistItem: React.FC<ChecklistItemProps> = ({ item, onToggle }) => {
     <div 
       className={cn(
         "flex items-center gap-3 p-3 bg-white rounded-lg border shadow-sm transition-all hover:bg-gray-50 cursor-pointer group",
-        isDone && "checklist-item-done bg-gray-50",
-        isAnimating && "animate-fade-in"
+        isDone && "bg-gray-50",
+        isAnimating && "animate-pulse"
       )}
       onClick={handleToggle}
     >
       <div className="flex-shrink-0">
         {isDone ? (
-          <CheckCircle className="h-6 w-6 text-travel-teal" />
+          <CheckCircle className="h-6 w-6 text-travel-teal animate-scale-in" />
         ) : (
           <Circle className="h-6 w-6 text-muted-foreground group-hover:text-travel-blue transition-colors" />
         )}
       </div>
       <div className="flex-1">
-        <p className={cn("font-medium", isDone && "line-through text-muted-foreground")}>{item.name}</p>
+        <p 
+          className={cn(
+            "font-medium transition-all", 
+            isDone && "line-through text-muted-foreground"
+          )}
+        >
+          {item.name}
+        </p>
         <p className="text-xs text-muted-foreground">{item.category}</p>
       </div>
     </div>

@@ -1,13 +1,16 @@
 
 import { useState } from 'react';
-import MapboxSearch from '@/components/MapboxSearch';
+import PlaceSearch from '@/components/PlaceSearch';
 import TravelChecklist from '@/components/TravelChecklist';
 import SavedChecklists from '@/components/SavedChecklists';
 import { generateChecklist, Destination } from '@/services/checklistService';
-import { Plane } from 'lucide-react';
+import { Plane, LogOut } from 'lucide-react';
+import { useAuth } from '@/contexts/AuthContext';
+import { Button } from '@/components/ui/button';
 
 const Index = () => {
   const [currentChecklist, setCurrentChecklist] = useState<Destination | null>(null);
+  const { user, logout } = useAuth();
 
   const handleDestinationSubmit = (destination: string) => {
     const newChecklist = generateChecklist(destination);
@@ -23,16 +26,32 @@ const Index = () => {
   return (
     <div className="min-h-screen bg-gradient-to-b from-travel-light to-white">
       <header className="container mx-auto py-8">
-        <div className="flex items-center justify-center gap-2 mb-6">
-          <Plane className="h-8 w-8 text-travel-blue" />
-          <h1 className="text-3xl font-bold text-travel-dark">Trip Prep Navigator</h1>
+        <div className="flex items-center justify-between mb-6">
+          <div className="flex items-center gap-2">
+            <Plane className="h-8 w-8 text-travel-blue" />
+            <h1 className="text-3xl font-bold text-travel-dark">Trip Prep Navigator</h1>
+          </div>
+          <div className="flex items-center gap-4">
+            <span className="text-sm text-muted-foreground hidden md:inline-block">
+              Olá, {user?.name || 'Viajante'}
+            </span>
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={logout}
+              className="flex items-center gap-1"
+            >
+              <LogOut className="h-4 w-4" />
+              <span className="hidden md:inline">Sair</span>
+            </Button>
+          </div>
         </div>
         <p className="text-center text-muted-foreground mb-8">
           Gere checklists personalizadas para suas viagens e mantenha-se organizado
         </p>
         
         <div className="max-w-2xl mx-auto mb-8">
-          <MapboxSearch onSubmit={handleDestinationSubmit} />
+          <PlaceSearch onSubmit={handleDestinationSubmit} />
         </div>
       </header>
 
