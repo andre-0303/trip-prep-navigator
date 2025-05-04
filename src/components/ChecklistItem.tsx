@@ -1,5 +1,5 @@
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { cn } from '@/lib/utils';
 import { ChecklistItem as ChecklistItemType } from '@/services/checklistService';
 import { CheckCircle, Circle } from 'lucide-react';
@@ -11,18 +11,31 @@ interface ChecklistItemProps {
 
 const ChecklistItem: React.FC<ChecklistItemProps> = ({ item, onToggle }) => {
   const [isDone, setIsDone] = useState(item.done);
+  const [isAnimating, setIsAnimating] = useState(false);
+
+  // Update local state when item prop changes
+  useEffect(() => {
+    setIsDone(item.done);
+  }, [item.done]);
 
   const handleToggle = () => {
     const newState = !isDone;
     setIsDone(newState);
+    setIsAnimating(true);
     onToggle(item.id, newState);
+    
+    // Reset animation state after animation completes
+    setTimeout(() => {
+      setIsAnimating(false);
+    }, 300);
   };
 
   return (
     <div 
       className={cn(
         "flex items-center gap-3 p-3 bg-white rounded-lg border shadow-sm transition-all hover:bg-gray-50 cursor-pointer group",
-        isDone && "checklist-item-done"
+        isDone && "checklist-item-done",
+        isAnimating && "animate-fade-in"
       )}
       onClick={handleToggle}
     >
@@ -34,7 +47,7 @@ const ChecklistItem: React.FC<ChecklistItemProps> = ({ item, onToggle }) => {
         )}
       </div>
       <div className="flex-1">
-        <p className="font-medium">{item.name}</p>
+        <p className={cn("font-medium", isDone && "line-through text-muted-foreground")}>{item.name}</p>
         <p className="text-xs text-muted-foreground">{item.category}</p>
       </div>
     </div>
