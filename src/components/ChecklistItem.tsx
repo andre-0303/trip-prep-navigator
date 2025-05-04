@@ -34,7 +34,7 @@ const ChecklistItem: React.FC<ChecklistItemProps> = ({ item, onToggle }) => {
     <div 
       className={cn(
         "flex items-center gap-3 p-3 bg-white rounded-lg border shadow-sm transition-all hover:bg-gray-50 cursor-pointer group",
-        isDone && "checklist-item-done",
+        isDone && "checklist-item-done bg-gray-50",
         isAnimating && "animate-fade-in"
       )}
       onClick={handleToggle}

@@ -1,6 +1,6 @@
 
 import { useState } from 'react';
-import DestinationInput from '@/components/DestinationInput';
+import MapboxSearch from '@/components/MapboxSearch';
 import TravelChecklist from '@/components/TravelChecklist';
 import SavedChecklists from '@/components/SavedChecklists';
 import { generateChecklist, Destination } from '@/services/checklistService';
@@ -32,7 +32,7 @@ const Index = () => {
         </p>
         
         <div className="max-w-2xl mx-auto mb-8">
-          <DestinationInput onSubmit={handleDestinationSubmit} />
+          <MapboxSearch onSubmit={handleDestinationSubmit} />
         </div>
       </header>
 
