@@ -20,7 +20,7 @@ const App = () => (
       <Sonner />
       <BrowserRouter>
         <AuthProvider>
-          <div className="min-h-screen flex flex-col">
+          <div className="min-h-screen flex flex-col bg-gradient-to-b from-travel-light to-white">
             <Routes>
               {/* Public routes */}
               <Route path="/login" element={<Login />} />

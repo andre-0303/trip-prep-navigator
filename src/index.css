@@ -1,5 +1,5 @@
 
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Poppins:wght@300;400;500;600;700&display=swap');
 
 @tailwind base;
 @tailwind components;
@@ -7,33 +7,33 @@
 
 @layer base {
   :root {
-    --background: 184 100% 97%;
-    --foreground: 198 40% 20%;
+    --background: 152 50% 98%;
+    --foreground: 160 40% 20%;
 
     --card: 0 0% 100%;
-    --card-foreground: 198 40% 20%;
+    --card-foreground: 160 40% 20%;
 
     --popover: 0 0% 100%;
-    --popover-foreground: 198 40% 20%;
+    --popover-foreground: 160 40% 20%;
 
-    --primary: 196 94% 59%;
+    --primary: 160 84% 39%;
     --primary-foreground: 210 40% 98%;
 
-    --secondary: 210 40% 96.1%;
-    --secondary-foreground: 198 40% 20%;
+    --secondary: 152 60% 94%;
+    --secondary-foreground: 160 40% 20%;
 
-    --muted: 210 40% 96.1%;
-    --muted-foreground: 215.4 16.3% 46.9%;
+    --muted: 152 30% 94%;
+    --muted-foreground: 160 20% 40%;
 
-    --accent: 173 93% 51%;
-    --accent-foreground: 222.2 47.4% 11.2%;
+    --accent: 142 70% 45%;
+    --accent-foreground: 160 40% 20%;
 
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 210 40% 98%;
 
-    --border: 214.3 31.8% 91.4%;
-    --input: 214.3 31.8% 91.4%;
-    --ring: 196 94% 59%;
+    --border: 150 30% 86%;
+    --input: 150 30% 86%;
+    --ring: 160 84% 39%;
 
     --radius: 0.75rem;
   }
@@ -53,12 +53,36 @@
   }
 }
 
+@layer components {
+  .glass-card {
+    @apply bg-white/70 backdrop-blur-sm border border-white/20 shadow-lg;
+  }
+  
+  .btn-gradient {
+    @apply bg-gradient-to-r from-green-500 to-emerald-600 text-white transition-all hover:shadow-lg;
+  }
+}
+
 .checklist-item-done {
   @apply line-through text-muted-foreground transition-all;
 }
 
 .checklist-item-done .item-icon {
-  @apply text-travel-teal transition-all;
+  @apply text-accent transition-all;
+}
+
+/* Animations */
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+.animate-float {
+  animation: float 6s ease-in-out infinite;
 }
 
 /* Responsive improvements */

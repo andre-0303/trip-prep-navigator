@@ -64,11 +64,16 @@ export default {
 					ring: 'hsl(var(--sidebar-ring))'
 				},
 				travel: {
-					'blue': '#4EA8DE',
-					'teal': '#2DD4BF',
-					'light': '#F0FDFA',
-					'dark': '#0F766E',
+					'blue': '#10b981', // Mudado para verde
+					'teal': '#059669', // Verde mais escuro
+					'light': '#ecfdf5', // Verde bem claro
+					'dark': '#047857', // Verde escuro
+					'mint': '#a7f3d0', // Verde menta
+					'lime': '#84cc16', // Verde lima
 				}
+			},
+			fontFamily: {
+				sans: ['Poppins', 'Inter', 'sans-serif'],
 			},
 			borderRadius: {
 				lg: 'var(--radius)',
@@ -122,9 +127,6 @@ export default {
 				'accordion-up': 'accordion-up 0.2s ease-out',
 				'fade-in': 'fade-in 0.3s ease-out',
 				'check-mark': 'check-mark 0.2s ease-out forwards'
-			},
-			fontFamily: {
-				sans: ['Inter', 'sans-serif'],
 			},
 		}
 	},
