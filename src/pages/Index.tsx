@@ -49,7 +49,7 @@ const Index = () => {
                 <Plane className="h-6 w-6" />
               </div>
               <h1 className="text-2xl md:text-3xl font-bold bg-gradient-to-r from-travel-dark to-travel-blue bg-clip-text text-transparent">
-                Trip Prep Navigator
+                ViajaGo
               </h1>
             </div>
             <div className="flex items-center gap-4">
@@ -135,7 +135,7 @@ const Index = () => {
           <div className="max-w-4xl mx-auto flex flex-col md:flex-row justify-between items-center gap-4">
             <div className="flex items-center gap-2">
               <Plane className="h-5 w-5 text-travel-mint" />
-              <p className="font-medium">Trip Prep Navigator</p>
+              <p className="font-medium">ViajaGo</p>
             </div>
             <p className="text-sm opacity-80">Organize sua próxima aventura com facilidade</p>
           </div>
