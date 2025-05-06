@@ -1,6 +1,6 @@
 
 import { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import PlaceSearch from '@/components/PlaceSearch';
 import TravelChecklist from '@/components/TravelChecklist';
 import SavedChecklists from '@/components/SavedChecklists';
@@ -13,6 +13,7 @@ import { Separator } from '@/components/ui/separator';
 const Index = () => {
   const [currentChecklist, setCurrentChecklist] = useState<Destination | null>(null);
   const { user, logout } = useAuth();
+  const navigate = useNavigate();
 
   const handleDestinationSubmit = (destination: string) => {
     const newChecklist = generateChecklist(destination);
@@ -22,6 +23,11 @@ const Index = () => {
   const handleSavedChecklistSelect = (checklist: Destination) => {
     setCurrentChecklist(checklist);
     // Scroll to the top to see the checklist
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
+  const handleLogoClick = () => {
+    navigate('/');
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
@@ -35,14 +41,17 @@ const Index = () => {
       <header className="py-6 bg-white/80 backdrop-blur-sm shadow-sm sticky top-0 z-10">
         <div className="container mx-auto">
           <div className="flex items-center justify-between">
-            <Link to="/" className="flex items-center gap-2 hover:opacity-80 transition-opacity">
+            <div 
+              onClick={handleLogoClick}
+              className="flex items-center gap-2 hover:opacity-80 transition-opacity cursor-pointer"
+            >
               <div className="p-2 rounded-full bg-gradient-to-br from-travel-blue to-travel-teal text-white">
                 <Plane className="h-6 w-6" />
               </div>
               <h1 className="text-2xl md:text-3xl font-bold bg-gradient-to-r from-travel-dark to-travel-blue bg-clip-text text-transparent">
                 Trip Prep Navigator
               </h1>
-            </Link>
+            </div>
             <div className="flex items-center gap-4">
               <div className="hidden md:flex items-center gap-2 px-3 py-1.5 rounded-full bg-muted">
                 <div className="h-6 w-6 rounded-full bg-travel-teal/20 flex items-center justify-center">
