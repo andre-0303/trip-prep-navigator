@@ -39,7 +39,7 @@ const Login = () => {
         <CardHeader className="text-center">
           <div className="flex items-center justify-center gap-2 mb-2">
             <Plane className="h-8 w-8 text-travel-blue" />
-            <CardTitle className="text-2xl font-bold text-travel-dark">Trip Prep Navigator</CardTitle>
+            <CardTitle className="text-2xl font-bold text-travel-dark">ViajaGo</CardTitle>
           </div>
           <CardDescription>
             Entre com sua conta para organizar suas viagens
