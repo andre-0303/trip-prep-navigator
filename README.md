@@ -1,73 +1,48 @@
-# Welcome to your Lovable project
+# 🌍 ViajaGo
 
-## Project info
+## 🔗 Link do Projeto
+https://viajago.vercel.app/login
 
-**URL**: https://lovable.dev/projects/de2a2f91-0ef6-4885-9d7d-bccb6c0a1462
+## ✨ Funcionalidades
+### ✅ Autenticação
+- Login e cadastro de usuários com Supabase Auth
 
-## How can I edit this code?
+### 🔍 Busca de Destinos
+- Campo de busca por qualquer lugar do mundo com sugestão automática
+- Integração com API de localização gratuita (sem Mapbox)
 
-There are several ways of editing your application.
+### 📋 Checklists Personalizadas
+- Criação de checklists por destino
+- Itens marcáveis como concluídos
+- Adição manual de novos itens
+- Categorização dos itens (opcional)
 
-**Use Lovable**
+### 🗺️ Histórico de Destinos
+- Armazena locais pesquisados pelo usuário
 
-Simply visit the [Lovable Project](https://lovable.dev/projects/de2a2f91-0ef6-4885-9d7d-bccb6c0a1462) and start prompting.
+### 🏠 Navegação
+- Clique no logo do site para voltar à home
 
-Changes made via Lovable will be committed automatically to this repo.
+### 📱 Responsividade
+- Totalmente responsivo para dispositivos móveis
 
-**Use your preferred IDE**
-
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
-
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
-
-Follow these steps:
-
-```sh
-# Step 1: Clone the repository using the project's Git URL.
-git clone <YOUR_GIT_URL>
-
-# Step 2: Navigate to the project directory.
-cd <YOUR_PROJECT_NAME>
-
-# Step 3: Install the necessary dependencies.
-npm i
-
-# Step 4: Start the development server with auto-reloading and an instant preview.
-npm run dev
-```
-
-**Edit a file directly in GitHub**
-
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
-
-**Use GitHub Codespaces**
-
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
-
-## What technologies are used for this project?
-
-This project is built with:
-
-- Vite
-- TypeScript
+## 🚀 Tecnologias Utilizadas
+### Frontend
 - React
-- shadcn-ui
+- Vite
 - Tailwind CSS
 
-## How can I deploy this project?
+### Backend
+- Supabase (Auth + Database)
 
-Simply open [Lovable](https://lovable.dev/projects/de2a2f91-0ef6-4885-9d7d-bccb6c0a1462) and click on Share -> Publish.
+## 📦 Deploy
+- Hospedado gratuitamente na Vercel
+- Acesso: https://viajago.vercel.app/login
 
-## Can I connect a custom domain to my Lovable project?
+## 🛠️ Como Rodar Localmente
+- Clonar repositório
+- Instalar dependências
+- Criar arquivo `.env` com variáveis do Supabase
+- Rodar com `npm run dev`
 
-Yes, you can!
 
-To connect a domain, navigate to Project > Settings > Domains and click Connect Domain.
-
-Read more here: [Setting up a custom domain](https://docs.lovable.dev/tips-tricks/custom-domain#step-by-step-guide)
