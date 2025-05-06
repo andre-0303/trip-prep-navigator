@@ -44,6 +44,10 @@
     @apply border-border;
   }
   
+  html {
+    scroll-behavior: smooth;
+  }
+  
   body {
     @apply bg-background text-foreground font-sans;
   }
@@ -55,4 +59,15 @@
 
 .checklist-item-done .item-icon {
   @apply text-travel-teal transition-all;
+}
+
+/* Responsive improvements */
+@media (max-width: 640px) {
+  .container {
+    @apply px-4;
+  }
+  
+  h1 {
+    @apply text-2xl;
+  }
 }

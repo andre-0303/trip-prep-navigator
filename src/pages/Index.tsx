@@ -1,5 +1,6 @@
 
 import { useState } from 'react';
+import { Link } from 'react-router-dom';
 import PlaceSearch from '@/components/PlaceSearch';
 import TravelChecklist from '@/components/TravelChecklist';
 import SavedChecklists from '@/components/SavedChecklists';
@@ -32,10 +33,10 @@ const Index = () => {
     <div className="min-h-screen bg-gradient-to-b from-travel-light to-white">
       <header className="container mx-auto py-8">
         <div className="flex items-center justify-between mb-6">
-          <div className="flex items-center gap-2">
+          <Link to="/" className="flex items-center gap-2 hover:opacity-80 transition-opacity">
             <Plane className="h-8 w-8 text-travel-blue" />
             <h1 className="text-3xl font-bold text-travel-dark">Trip Prep Navigator</h1>
-          </div>
+          </Link>
           <div className="flex items-center gap-4">
             <span className="text-sm text-muted-foreground hidden md:inline-block">
               Olá, {displayName}
