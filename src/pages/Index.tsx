@@ -23,6 +23,11 @@ const Index = () => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
+  // Get user's display name from user metadata or fall back to email
+  const displayName = user?.user_metadata?.name || 
+                     user?.email?.split('@')[0] || 
+                     'Viajante';
+
   return (
     <div className="min-h-screen bg-gradient-to-b from-travel-light to-white">
       <header className="container mx-auto py-8">
@@ -33,7 +38,7 @@ const Index = () => {
           </div>
           <div className="flex items-center gap-4">
             <span className="text-sm text-muted-foreground hidden md:inline-block">
-              Olá, {user?.name || 'Viajante'}
+              Olá, {displayName}
             </span>
             <Button
               variant="outline"
