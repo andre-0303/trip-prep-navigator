@@ -1,8 +1,10 @@
 
 import React, { createContext, useState, useContext, useEffect, ReactNode } from 'react';
-import { User, UserCredentials, getAuthState, loginUser, registerUser, logoutUser } from '@/services/authService';
+import { User, Session } from '@supabase/supabase-js';
 import { useNavigate } from 'react-router-dom';
-import { useToast } from '@/hooks/use-toast';
+import { toast } from 'sonner';
+import { supabase } from '@/integrations/supabase/client';
+import { UserCredentials, loginUser, registerUser, logoutUser, getCurrentSession } from '@/services/supabaseAuthService';
 
 interface AuthContextType {
   user: User | null;
@@ -11,77 +13,92 @@ interface AuthContextType {
   register: (credentials: UserCredentials) => Promise<boolean>;
   logout: () => void;
   loading: boolean;
+  session: Session | null;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [user, setUser] = useState<User | null>(null);
+  const [session, setSession] = useState<Session | null>(null);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [loading, setLoading] = useState(true);
-  const { toast } = useToast();
   const navigate = useNavigate();
 
   useEffect(() => {
-    const authState = getAuthState();
-    setUser(authState.user);
-    setIsAuthenticated(authState.isAuthenticated);
-    setLoading(false);
+    // Set up auth state listener FIRST
+    const { data: { subscription } } = supabase.auth.onAuthStateChange(
+      (event, session) => {
+        setSession(session);
+        setUser(session?.user ?? null);
+        setIsAuthenticated(!!session);
+      }
+    );
+
+    // THEN check for existing session
+    getCurrentSession().then(({ success, session }) => {
+      if (success && session) {
+        setSession(session);
+        setUser(session.user);
+        setIsAuthenticated(true);
+      }
+      setLoading(false);
+    });
+
+    return () => subscription.unsubscribe();
   }, []);
 
   const login = async (credentials: UserCredentials): Promise<boolean> => {
-    const user = loginUser(credentials);
-    if (user) {
-      setUser(user);
+    const { success, data } = await loginUser(credentials);
+    
+    if (success && data.session) {
+      setUser(data.session.user);
+      setSession(data.session);
       setIsAuthenticated(true);
-      toast({
-        title: "Login bem-sucedido!",
-        description: `Bem-vindo(a) ${user.name}!`
+      toast.success("Login bem-sucedido!", {
+        description: `Bem-vindo(a) ${data.session.user.user_metadata.name || data.session.user.email}!`
       });
       return true;
-    } else {
-      toast({
-        title: "Erro ao fazer login",
-        description: "Email ou senha incorretos",
-        variant: "destructive"
-      });
-      return false;
     }
+    return false;
   };
 
   const register = async (credentials: UserCredentials): Promise<boolean> => {
-    const user = registerUser(credentials);
-    if (user) {
-      setUser(user);
+    const { success, data } = await registerUser(credentials);
+    
+    if (success && data?.session) {
+      setUser(data.session.user);
+      setSession(data.session);
       setIsAuthenticated(true);
-      toast({
-        title: "Registro concluído!",
+      toast.success("Registro concluído!", {
         description: "Sua conta foi criada com sucesso"
       });
       return true;
-    } else {
-      toast({
-        title: "Erro ao registrar",
-        description: "Este email já está em uso",
-        variant: "destructive"
-      });
-      return false;
     }
+    return false;
   };
 
-  const logout = () => {
-    logoutUser();
+  const logout = async () => {
+    await logoutUser();
     setUser(null);
+    setSession(null);
     setIsAuthenticated(false);
     navigate('/login');
-    toast({
-      title: "Desconectado",
+    toast.success("Desconectado", {
       description: "Você saiu da sua conta"
     });
   };
 
   return (
-    <AuthContext.Provider value={{ user, isAuthenticated, login, register, logout, loading }}>
+    <AuthContext.Provider value={{ 
+      user, 
+      isAuthenticated, 
+      login, 
+      register, 
+      logout, 
+      loading,
+      session
+    }}>
       {children}
     </AuthContext.Provider>
   );

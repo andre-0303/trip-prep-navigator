@@ -6,7 +6,7 @@ import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }
 import { Input } from '@/components/ui/input';
 import { Plane, LogIn } from 'lucide-react';
 import { useAuth } from '@/contexts/AuthContext';
-import { UserCredentials } from '@/services/authService';
+import { UserCredentials } from '@/services/supabaseAuthService';
 
 const Login = () => {
   const [email, setEmail] = useState('');

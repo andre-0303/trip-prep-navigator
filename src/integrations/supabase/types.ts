@@ -9,7 +9,127 @@ export type Json =
 export type Database = {
   public: {
     Tables: {
-      [_ in never]: never
+      checklist_items: {
+        Row: {
+          added_by_user: boolean
+          category: string | null
+          checklist_id: string
+          completed: boolean
+          content: string
+          created_at: string
+          id: string
+        }
+        Insert: {
+          added_by_user?: boolean
+          category?: string | null
+          checklist_id: string
+          completed?: boolean
+          content: string
+          created_at?: string
+          id?: string
+        }
+        Update: {
+          added_by_user?: boolean
+          category?: string | null
+          checklist_id?: string
+          completed?: boolean
+          content?: string
+          created_at?: string
+          id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "checklist_items_checklist_id_fkey"
+            columns: ["checklist_id"]
+            isOneToOne: false
+            referencedRelation: "checklists"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      checklists: {
+        Row: {
+          created_at: string
+          destination_id: string
+          id: string
+          title: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          destination_id: string
+          id?: string
+          title: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          destination_id?: string
+          id?: string
+          title?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "checklists_destination_id_fkey"
+            columns: ["destination_id"]
+            isOneToOne: false
+            referencedRelation: "destinations"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      destinations: {
+        Row: {
+          full_name: string
+          id: string
+          latitude: number | null
+          longitude: number | null
+          name: string
+          searched_at: string
+          user_id: string
+        }
+        Insert: {
+          full_name: string
+          id?: string
+          latitude?: number | null
+          longitude?: number | null
+          name: string
+          searched_at?: string
+          user_id: string
+        }
+        Update: {
+          full_name?: string
+          id?: string
+          latitude?: number | null
+          longitude?: number | null
+          name?: string
+          searched_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      profiles: {
+        Row: {
+          created_at: string
+          id: string
+          name: string
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          id: string
+          name: string
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          name?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
