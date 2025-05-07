@@ -4,20 +4,50 @@ import { Link, useNavigate } from 'react-router-dom';
 import PlaceSearch from '@/components/PlaceSearch';
 import TravelChecklist from '@/components/TravelChecklist';
 import SavedChecklists from '@/components/SavedChecklists';
+import PricingPlans from '@/components/PricingPlans';
 import { generateChecklist, Destination } from '@/services/checklistService';
 import { Plane, LogOut, MapPin, Search, List, Check } from 'lucide-react';
 import { useAuth } from '@/contexts/AuthContext';
 import { Button } from '@/components/ui/button';
 import { Separator } from '@/components/ui/separator';
+import { useToast } from '@/hooks/use-toast';
+
+// Maximum number of checklists allowed in basic plan
+const MAX_CHECKLISTS_BASIC = 5;
 
 const Index = () => {
   const [currentChecklist, setCurrentChecklist] = useState<Destination | null>(null);
+  const [showPricingPlans, setShowPricingPlans] = useState(false);
   const { user, logout } = useAuth();
   const navigate = useNavigate();
+  const { toast } = useToast();
 
   const handleDestinationSubmit = (destination: string) => {
+    // Count existing checklists
+    const savedChecklistsCount = getSavedChecklistsCount();
+    
+    if (savedChecklistsCount >= MAX_CHECKLISTS_BASIC) {
+      toast({
+        title: "Limite atingido",
+        description: "Você atingiu o limite de checklists do plano básico. Faça upgrade para criar mais.",
+      });
+      setShowPricingPlans(true);
+      return;
+    }
+    
     const newChecklist = generateChecklist(destination);
     setCurrentChecklist(newChecklist);
+  };
+
+  const getSavedChecklistsCount = (): number => {
+    let count = 0;
+    for (let i = 0; i < localStorage.length; i++) {
+      const key = localStorage.key(i);
+      if (key && key.startsWith('checklist-') && !key.includes('update-')) {
+        count++;
+      }
+    }
+    return count;
   };
 
   const handleSavedChecklistSelect = (checklist: Destination) => {
@@ -40,6 +70,18 @@ const Index = () => {
     // Isso é feito simplesmente usando um pequeno hack: adicionando um timestamp para forçar a atualização
     localStorage.setItem(`checklist-update-${Date.now()}`, 'updated');
     // O componente SavedChecklists está ouvindo mudanças no localStorage e será atualizado
+  };
+
+  const handleDeleteChecklist = (id: string) => {
+    if (currentChecklist && currentChecklist.id === id) {
+      setCurrentChecklist(null);
+    }
+  };
+
+  const handleUpgradePlan = () => {
+    setShowPricingPlans(true);
+    // Scroll to the top to see the pricing plans
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
   // Get user's display name from user metadata or fall back to email
@@ -103,13 +145,19 @@ const Index = () => {
               Gere checklists personalizadas para suas viagens e mantenha-se organizado
             </p>
             
-            <div className="bg-white rounded-xl shadow-lg p-6 mb-8 border border-border">
-              <PlaceSearch onSubmit={handleDestinationSubmit} />
-            </div>
+            {showPricingPlans ? (
+              <div className="bg-white rounded-xl shadow-lg p-6 mb-8 border border-border">
+                <PricingPlans onClose={() => setShowPricingPlans(false)} />
+              </div>
+            ) : (
+              <div className="bg-white rounded-xl shadow-lg p-6 mb-8 border border-border">
+                <PlaceSearch onSubmit={handleDestinationSubmit} />
+              </div>
+            )}
           </div>
 
           <div className="max-w-4xl mx-auto mb-8 space-y-8">
-            {currentChecklist && (
+            {currentChecklist && !showPricingPlans && (
               <div className="bg-white rounded-xl shadow-lg p-6 animate-fade-in border border-border">
                 <div className="flex items-center gap-2 mb-4">
                   <div className="p-2 rounded-full bg-travel-teal/10">
@@ -129,20 +177,26 @@ const Index = () => {
 
         <Separator className="bg-travel-teal/10" />
 
-        <section className="container mx-auto py-10">
-          <div className="max-w-4xl mx-auto">
-            <div className="flex items-center gap-2 mb-6">
-              <div className="p-2 rounded-full bg-travel-blue/10">
-                <List className="h-5 w-5 text-travel-blue" />
+        {!showPricingPlans && (
+          <section className="container mx-auto py-10">
+            <div className="max-w-4xl mx-auto">
+              <div className="flex items-center gap-2 mb-6">
+                <div className="p-2 rounded-full bg-travel-blue/10">
+                  <List className="h-5 w-5 text-travel-blue" />
+                </div>
+                <h3 className="text-xl font-semibold text-travel-dark">Checklists salvos</h3>
               </div>
-              <h3 className="text-xl font-semibold text-travel-dark">Checklists salvos</h3>
+              
+              <div className="bg-white rounded-xl shadow-lg p-6 border border-border">
+                <SavedChecklists 
+                  onSelect={handleSavedChecklistSelect} 
+                  onDeleteChecklist={handleDeleteChecklist}
+                  onUpgradePlan={handleUpgradePlan}
+                />
+              </div>
             </div>
-            
-            <div className="bg-white rounded-xl shadow-lg p-6 border border-border">
-              <SavedChecklists onSelect={handleSavedChecklistSelect} />
-            </div>
-          </div>
-        </section>
+          </section>
+        )}
       </main>
 
       <footer className="mt-auto py-8 bg-travel-dark text-white">

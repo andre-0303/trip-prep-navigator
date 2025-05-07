@@ -18,14 +18,17 @@ const ChecklistCategories: React.FC<ChecklistCategoriesProps> = ({ items, onTogg
     itemsByCategory[item.category].push(item);
   });
 
+  // Sort categories by name for consistent display
+  const sortedCategories = Object.keys(itemsByCategory).sort();
+
   return (
     <CardContent>
       <div className="space-y-6">
-        {Object.entries(itemsByCategory).map(([category, categoryItems]) => (
+        {sortedCategories.map((category) => (
           <div key={category} className="space-y-2">
             <h3 className="font-medium text-sm text-muted-foreground">{category}</h3>
             <div className="grid gap-2">
-              {categoryItems.map(item => (
+              {itemsByCategory[category].map(item => (
                 <ChecklistItem 
                   key={item.id} 
                   item={item} 
