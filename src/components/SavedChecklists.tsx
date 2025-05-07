@@ -12,6 +12,7 @@ interface SavedChecklistsProps {
 
 const SavedChecklists: React.FC<SavedChecklistsProps> = ({ onSelect }) => {
   const [savedChecklists, setSavedChecklists] = useState<Destination[]>([]);
+  const [updateTrigger, setUpdateTrigger] = useState(0);
   const { toast } = useToast();
 
   useEffect(() => {
@@ -22,7 +23,7 @@ const SavedChecklists: React.FC<SavedChecklistsProps> = ({ onSelect }) => {
       for (let i = 0; i < localStorage.length; i++) {
         const key = localStorage.key(i);
         
-        if (key && key.startsWith('checklist-')) {
+        if (key && key.startsWith('checklist-') && !key.includes('update-')) {
           try {
             const checklistJson = localStorage.getItem(key);
             if (checklistJson) {
@@ -43,10 +44,32 @@ const SavedChecklists: React.FC<SavedChecklistsProps> = ({ onSelect }) => {
     // Add event listener to update the list when localStorage changes in another tab
     window.addEventListener('storage', loadSavedChecklists);
     
+    // Create a listener for storage changes
+    const handleStorageChange = (event: StorageEvent) => {
+      if (event.key && event.key.startsWith('checklist-')) {
+        loadSavedChecklists();
+      }
+    };
+
+    // Listen for storage events
+    window.addEventListener('storage', handleStorageChange);
+    
+    // Create a MutationObserver to watch for localStorage changes in the same tab
+    const originalSetItem = localStorage.setItem;
+    localStorage.setItem = function(key, value) {
+      originalSetItem.call(this, key, value);
+      if (key.startsWith('checklist-')) {
+        loadSavedChecklists();
+        setUpdateTrigger(prev => prev + 1); // Force re-render
+      }
+    };
+    
     return () => {
       window.removeEventListener('storage', loadSavedChecklists);
+      window.removeEventListener('storage', handleStorageChange);
+      localStorage.setItem = originalSetItem;
     };
-  }, []);
+  }, [updateTrigger]);
 
   const handleDelete = (id: string) => {
     localStorage.removeItem(`checklist-${id}`);

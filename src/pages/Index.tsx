@@ -31,6 +31,17 @@ const Index = () => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
+  const handleCloseChecklist = () => {
+    setCurrentChecklist(null);
+  };
+
+  const handleSaveChecklist = (updatedChecklist: Destination) => {
+    // Quando a checklist for salva, forçamos uma atualização da lista de checklists salvas
+    // Isso é feito simplesmente usando um pequeno hack: adicionando um timestamp para forçar a atualização
+    localStorage.setItem(`checklist-update-${Date.now()}`, 'updated');
+    // O componente SavedChecklists está ouvindo mudanças no localStorage e será atualizado
+  };
+
   // Get user's display name from user metadata or fall back to email
   const displayName = user?.user_metadata?.name || 
                      user?.email?.split('@')[0] || 
@@ -106,7 +117,11 @@ const Index = () => {
                   </div>
                   <h3 className="text-xl font-semibold">Seu checklist personalizado</h3>
                 </div>
-                <TravelChecklist destination={currentChecklist} />
+                <TravelChecklist 
+                  destination={currentChecklist} 
+                  onClose={handleCloseChecklist}
+                  onSave={handleSaveChecklist}
+                />
               </div>
             )}
           </div>

@@ -5,15 +5,17 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Destination, ChecklistItem as ChecklistItemType, determineDestinationType } from '@/services/checklistService';
 import { jsPDF } from 'jspdf';
 import { Button } from '@/components/ui/button';
-import { Download, Save, Plane, Umbrella, Mountain, Tent, Snowflake, Globe, Building } from 'lucide-react';
+import { Download, Save, Plane, Umbrella, Mountain, Tent, Snowflake, Globe, Building, X } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import { Progress } from '@/components/ui/progress';
 
 interface TravelChecklistProps {
   destination: Destination;
+  onClose?: () => void;
+  onSave?: (destination: Destination) => void;
 }
 
-const TravelChecklist: React.FC<TravelChecklistProps> = ({ destination }) => {
+const TravelChecklist: React.FC<TravelChecklistProps> = ({ destination, onClose, onSave }) => {
   const [items, setItems] = useState<ChecklistItemType[]>(destination.items);
   const [progress, setProgress] = useState(0);
   const { toast } = useToast();
@@ -108,7 +110,13 @@ const TravelChecklist: React.FC<TravelChecklistProps> = ({ destination }) => {
   };
 
   const handleSave = () => {
-    saveToLocalStorage({ ...destination, items });
+    const updatedDestination = { ...destination, items };
+    saveToLocalStorage(updatedDestination);
+    
+    // Call the onSave callback if provided
+    if (onSave) {
+      onSave(updatedDestination);
+    }
     
     toast({
       title: "Checklist salva!",
@@ -151,7 +159,16 @@ const TravelChecklist: React.FC<TravelChecklistProps> = ({ destination }) => {
 
   return (
     <Card className="animate-fade-in">
-      <CardHeader className="pb-3">
+      <CardHeader className="pb-3 relative">
+        {onClose && (
+          <button 
+            onClick={onClose}
+            className="absolute top-4 right-4 p-1 hover:bg-muted rounded-md text-muted-foreground hover:text-foreground transition-colors"
+            aria-label="Fechar checklist"
+          >
+            <X className="h-5 w-5" />
+          </button>
+        )}
         <div className="flex items-center gap-2 mb-1">
           {getDestinationIcon(destination.type)}
           <CardTitle className="text-travel-dark text-2xl">{destination.name}</CardTitle>
