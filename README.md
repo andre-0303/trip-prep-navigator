@@ -1,7 +1,7 @@
 # 🌍 ViajaGo
 
 ## 🔗 Link do Projeto
-https://viajago.vercel.app/login
+[https://viajago.vercel.app/login](https://viajago.vercel.app/login)
 
 ## ✨ Funcionalidades
 ### ✅ Autenticação
