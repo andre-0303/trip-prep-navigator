@@ -1,8 +1,5 @@
 # 🌍 ViajaGo
 
-## 🔗 Link do Projeto
-[https://viajago.vercel.app/login](https://viajago.vercel.app/login)
-
 ## ✨ Funcionalidades
 ### ✅ Autenticação
 - Login e cadastro de usuários com Supabase Auth
